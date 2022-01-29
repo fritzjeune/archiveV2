@@ -1,0 +1,105 @@
+<%- include('includes/header'); -%>
+    <%- include('includes/nav'); -%>
+
+    <div class="container serv-credit col-9 gap-3 px-0 py-2">
+        <%- include('includes/credit-side'); -%>
+        <div class="col-9 rounded-3 content p-2 gap-2">
+            <div class="content-head d-flex flex-row align-items-center justify-content-between px-3 py-2">
+                <div class="icn d-flex flex-row gap-3">
+                    <img class="" src="/icons/double-chevron-l.png" alt="" srcset="">
+                    <div>25</div>
+                    <img class="" src="/icons/double-chevron.png" alt="" srcset="">
+                </div>
+                <form class="p-0" action="">
+                    <input class="m-0 px-3 rounded-3" type="text" name="" id="lookup">
+                    <img src="/icons/search-lookup.png" alt="" srcset="">
+                </form>
+            </div>
+            <div class="container loaner-container" id="loaner-cont">
+                
+            </div>
+            <div class="loan" id="loan">
+                <div>
+                    <div class="">
+                        <p class="">Nom:</p>
+                        <p class=""  id="surname"></p>
+                    </div>
+                    <div class="" >
+                        <p class="">Prenom:</p>
+                        <p class="" id="firstname"></p>
+                    </div>
+                    <div class="">
+                        <p class="">Tel:</p>
+                        <p class="" id="phone"></p>
+                    </div>
+                    <div class="">
+                        <p class="">Entreprise:</p>
+                        <p class="" id="enterprise"></p>
+                    </div>
+                    <div class="">
+                        <p class="">Date d'echeance:</p>
+                        <p class="" id="e-date"></p>
+                    </div>
+                    <div class="">
+                        <p class="">Mensualite:</p>
+                        <p class="" id="monthly"></p>
+                    </div>
+                    <div class="">
+                        <p class="">Balance:</p>
+                        <p class="" id="actual-balance"></p>
+                    </div>
+                    <div class="">
+                        <p class="">Nbre Retard:</p>
+                        <p class="" id="late-count"></p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <a href="" id=""><img src="/icons/printer2.png" alt=""></a>
+                    </div>
+                    <div>
+                        <a href="" id="edit-link"><img src="/icons/write.png" alt=""></a>
+                    </div>
+                </div>                    
+            </div>
+        </div>
+    </div>
+
+<%- include('includes/footer'); -%> 
+<script>
+    
+    let loanLookup = document.getElementById('lookup');
+    let loanContainer = document.getElementById('loaner-cont');
+    let loanItem = document.getElementById('loan');
+
+    loanLookup.addEventListener('keyup', (event)=> {
+        let query = event.target.value;
+        
+        fetch(`/api/v1/pret/?name=${query}`).then(response => response.json()).then(data => {
+            if (data.count > 0) {               
+                data.data.forEach(loan => {
+                    let newLoanEl = loanItem.cloneNode(true);
+                    newLoanEl.querySelector('#surname').innerText = loan.surname;
+                    newLoanEl.querySelector('#firstname').innerText = loan.firstname;
+                    newLoanEl.querySelector('#phone').innerText = loan.assuree.phone;
+                    newLoanEl.querySelector('#enterprise').innerText = loan.enterprise.businessName;
+                    newLoanEl.querySelector('#e-date').innerText = loan.issued_date.split("T")[0];
+                    newLoanEl.querySelector('#monthly').innerText = loan.monthlyRemittance;
+                    newLoanEl.querySelector('#actual-balance').innerText = loan.actualBalance;
+                    newLoanEl.querySelector('#late-count').innerText = loan.term - loan.payments.length;
+                    newLoanEl.querySelector('#edit-link').href = `/credit/${loan._id}`;
+                    loanContainer.appendChild(newLoanEl);
+                });
+                
+            }
+        });
+    });
+
+    loanLookup.addEventListener('keydown', (event)=> { 
+        loanContainer.innerHTML = ' ';
+    });
+
+
+
+
+</script> 

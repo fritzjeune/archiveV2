@@ -1,0 +1,105 @@
+<%- include('includes/header'); -%>
+    <%- include('includes/nav'); -%>
+
+    <div class="container serv-credit col-9 gap-3 px-0 py-2">
+        <%- include('includes/credit-side'); -%>
+        <div class="col-9 rounded-3 content p-2 gap-2">
+            <div class="content-head d-flex flex-row align-items-center justify-content-between px-3 py-2">
+                <p class="section-title mt-3"> <%= enterprise.businessName %> </p>
+                <p class="section-title mt-3"> <%= enterprise.matriculeONA %> </p>
+            </div>
+            <div class="loaner-container">
+                <div class="loan single-credit">
+                    <% if (enterprise) { %>
+                        <div>
+                            <div class="">
+                                <p class="">Nom:</p>
+                                <p class=""  id="businessName"> <%= enterprise.businessName %> </p>
+                            </div>
+                            <div class="" >
+                                <p class="">Categorie:</p>
+                                <p class="" id="businessCategory"> <%= enterprise.businessCategory %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">NIF:</p>
+                                <p class="" id="nif"> <%= enterprise.nif %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Matricule:</p>
+                                <p class="" id="matricule-ona"> <%= enterprise.matriculeONA %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Id Comerce:</p>
+                                <p class="" id="min-comerce-id"> <%= enterprise.minComerceId %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Date d'afiliation:</p>
+                                <p class="" id="affiliation-date"> <%= enterprise.affiliationDate %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Tel:</p>
+                                <p class="" id="phone"> <%= enterprise.phone %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Adress:</p>
+                                <p class="" id="address"> <%= enterprise.socialAdress.street %> </p>
+                            </div>
+                            
+                        </div>
+                    <% } %>
+                </div>
+                <p class="fs-5 text-center mt-2">Prets Actifs</p>
+                <div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prenom</th>
+                                <th scope="col">NIF</th>
+                                <th scope="col">Montant Pret</th>
+                                <th scope="col">Mensualite</th>
+                                <th scope="col">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% assurees.forEach((loan, i) => { %>
+                                <tr>
+                                    <td scope="row"> <%= i + 1 %> </td>
+                                    <td> <%= loan.surname %> </td>
+                                    <td> <%= loan.firstname %> </td>
+                                    <td> <%= loan.assuree.nif %> </td>
+                                    <td> <%= loan.finalAmount %> </td>
+                                    <td> <%= loan.monthlyRemittance %> </td>
+                                    <td> <%= loan.actualBalance %> </td>
+                                </tr>
+                            <% }); %> 
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="row"></th>
+                                <th></th>
+                                <th></th>
+                                <th>Total Mensuel:</th>
+                                <th></th>
+                                <th>Total:</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="col-12 row justify-content-between">
+                        <div class="col row mx-auto justify-content-between gap-3">
+                            <button class="btns col-5" data-bs-toggle="modal" data-bs-target="#payment-modal">Effectuer Paiement</button>
+                            <button class="btns col-5" >Imprimer Rapport</button>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+
+<%- include('includes/footer'); -%> 
+<%- include('includes/form-script'); -%> 
+<%- include('includes/form-lookup'); -%>    

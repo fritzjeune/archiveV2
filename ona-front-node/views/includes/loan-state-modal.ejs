@@ -1,0 +1,68 @@
+
+
+<!-- Modal -->
+<div class="modal fade" id="loan-state-mdl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> <%= loan.surname %> <%= loan.firstname %> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mois</th>
+                                <th scope="col">Date Versement</th>
+                                <th scope="col">Solde</th>
+                                <th scope="col">Mensualite</th>
+                                <th scope="col">Interet Mensuel</th>
+                                <th scope="col">Versement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (loan) { %>
+                                <!-- <% let newTotal = loan.finalAmount %> -->
+                                <% let count = 1 %>
+                                <% let actualB = loan.finalAmount %>
+                                <% let nextdate = moment(loan.issued_date).add(1, 'M').format('YYYY-MM-DD') %>
+                                <% while (count != loan.term + 1 ) { %>
+                                    <tr class="">
+                                        <td scope="row"> <%= count %> </td> 
+                                        <td><%= nextdate %></td>
+                                        <td>HTG <%= (actualB - loan.monthlyRemittance).toFixed(2) %></td>
+                                        <% let interest = parseFloat((loan.totalInterest / loan.term).toFixed(2)) %>
+                                        <td>HTG <%= loan.monthlyRemittance - interest %></td>
+                                        <td>HTG <%= interest.toFixed(2) %></td>
+                                        <td>HTG <%= loan.monthlyRemittance %></td>
+                                    </tr>
+                                    <% count++ %>
+                                    <% nextdate = moment(nextdate).add(1, 'M').format('YYYY-MM-DD') %>
+                                    <% actualB = (actualB - loan.monthlyRemittance).toFixed(2) %>
+                                <% } %>
+                            <% } %>
+                            
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="row"></th>
+                                <th>Total</th>
+                                <th></th>
+                                <th> <%= loan.loanApprouved %> </th>
+                                <th> <%= loan.totalInterest %> </th>
+                                <th> <%= loan.finalAmount %> </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Print</button>
+            </div>
+        </div>
+    </div>
+</div>

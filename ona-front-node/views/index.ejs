@@ -1,0 +1,157 @@
+<%- include('includes/header'); -%>
+
+<body class="homepage">
+
+    <section class="welcome container-fluid row justify-content-center align-content-center py-5 m-0">
+        <div class="col-2 p-2">
+            <img class="w-100" src="/imgs/logo-original-ona.png" alt="logo-original-ona">
+        </div>
+        <div class="col-4 row align-items-center">
+            <h1 class="text-center welc-text">Welcome to ONA App</h1>
+        </div>
+    </section>
+
+    <div class="row col-4 m-auto mt-5 p-4 gap-3">
+        <a href="" class="col btn btn-danger" data-bs-toggle="modal" data-bs-target="#register-modal">Register</a>
+        <a href="" class="col btn btn-danger" data-bs-toggle="modal" data-bs-target="#login-modal">Login</a>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/api/v1/auth/login" method="post" id="login-form">
+                        <div class="mb-3">
+                          <label for="log-email" class="form-label">Email</label>
+                          <input type="email" name="email" class="form-control" id="email" placeholder="abc@abc.com">
+                          <div id="emailHelp" class="form-text">The username giving by your supervisor</div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="log-password" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="log-password" name="password">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="log-submit">Login</button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="register-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Register</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off" method="post" action="/api/v1/auth">
+                    <input autocomplete="false" name="hidden" type="text" style="display:none;">
+                    <div class="row justify-content-between px-3">
+                        <div class="mb-3 col-6">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="email">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="reg-username" class="form-label">Username:</label>
+                            <input type="text" class="form-control" id="reg-username"  name="username" autocomplete="off">
+                        </div>
+                    </div>
+                    
+                    <div class="row justify-content-between px-3">
+                        <div class="mb-3 col-6">
+                            <label for="reg-password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="reg-password" name="password" autocomplete="off">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="conf-password" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="conf-password">
+                        </div>
+                    </div>
+                    <div class="row justify-content-between px-3">
+                        <div class="mb-3 col-6">
+                            <label for="firstname" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstname" name="firstname">
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="lastname" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname">
+                        </div>
+                    </div>
+                    <div class="row justify-content-between px-3">
+                        <div class="mb-3 col-6">
+                            <label for="service" class="form-label">Service</label>
+                            <select name="service" id="service" class="form-control">
+                                <option value="" selected="true" disabled>Choisir votre service</option>
+                                <option value="credit">Credit</option>
+                                <option value="adm-credit">Adm. Credit</option>
+                                <option value="porte-feuille">Porte-Feuille</option>
+                                <option value="recouvrement">Recouvrement</option>
+                                <option value="call-center">Call Center</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="fonction" class="form-label">Fonction</label>
+                            <select name="fonction" id="fonction" class="form-control">
+                                <option value="" selected="true" disabled>Choisir votre fonction</option>
+                                <option value="agent">Agent</option>
+                                <option value="ass-chef-service">Ass. Chef de Service</option>
+                                <option value="chef-service">Chef de Service</option>
+                                <option value="ass-directeur">Ass. Directeur</option>
+                                <option value="directeur">Directeur</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="fonction" name="fonction"> -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    <%- include('includes/footer'); -%>   
+
+    <script>
+        // let logBtn = document.querySelector("#log-submit")
+        // // console.log(loginForm);
+        
+
+        // async function sendRequest (url, data, method) {
+        //     let response = await fetch(url, {
+        //         method: method,
+        //         data : data
+        //     });
+        //     console.log(response)
+        // }
+
+
+
+        
+
+        // logBtn.addEventListener('click', (event)=> {
+        //     event.preventDefault();
+        //     alert("hello")
+        //     let loginForm = document.getElementById("login-form");
+        //     let formData = new FormData(loginForm);
+        //     console.log(formData);
+        //     sendRequest('/api/v1/auth/login', formData, "POST");
+        //     console.log(formData);
+            
+        // })
+    </script>
+</body>
+
+</html>

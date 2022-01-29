@@ -1,0 +1,188 @@
+<%- include('includes/header'); -%>
+    <%- include('includes/nav'); -%>
+
+    <div class="container serv-credit col-9 gap-3 px-0 py-2">
+        <%- include('includes/credit-side'); -%>
+        <div class="col-9 rounded-3 content p-2 gap-2">
+            <div class="content-head d-flex flex-row align-items-center justify-content-between px-3 py-2">
+                <p class="section-title mt-3"> <%= loan.surname %> <%= loan.firstname %> </p>
+                <p class="section-title mt-3"> <%= loan.loanId %> </p>
+            </div>
+            <div class="loaner-container">
+                <div class="loan single-credit">
+                    <% if (loan != null) { %>
+                        <div>
+                            <div class="">
+                                <p class="">Nom:</p>
+                                <p class=""> <%= loan.surname %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Prenom:</p>
+                                <p class=""> <%= loan.firstname %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Passport</p>
+                                <p class=""> <%= loan.assuree.passport %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">NIF:</p>
+                                <p class=""> <%= loan.assuree.nif %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">CIN:</p>
+                                <p class=""> <%= loan.assuree.cin %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Matricule:</p>
+                                <p class=""> <%= loan.assuree.matriculeOnaArchive %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Entreprise:</p>
+                                <p class=""> <%= loan.enterprise.businessName %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Matricule Entreprise</p>
+                                <p class=""> <%= loan.enterprise.matriculeONA %> </p>
+                            </div>
+                            <hr>
+                            <hr>
+                            <hr>
+                            <hr>
+                            <div class="">
+                                <p class="">Tel:</p>
+                                <p class=""> <%= loan.assuree.phone %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Tel Entreprise</p>
+                                <p class=""> <%= loan.enterprise.phone %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Email</p>
+                                <p class=""> <%= loan.assuree.email %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Adress:</p>
+                                <p class=""> <%= loan.assuree.address.street %> </p>
+                            </div>
+                            <hr>
+                            <hr>
+                            <hr>
+                            <hr>
+                            <div class="">
+                                <p class="">Montant Approuve:</p>
+                                <p class=""> <%= loan.loanApprouved %> </p> 
+                            </div>
+                            <div class="">
+                                <p class="">Total Interet:</p>
+                                <p class=""> <%= loan.totalInterest %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Total Du Pret:</p>
+                                <p class=""> <%= loan.finalAmount %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Droit de Timbre</p>
+                                <p class=""> <%= loan.stampDuty %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Dette Rachete:</p>
+                                <p class=""> <%= loan.deducedDebts %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Montant Decaisse:</p>
+                                <p class=""> <%= loan.CashReceived %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Methode Paiement:</p>
+                                <p class="">Check BNC</p>
+                            </div>
+                            <div class="">
+                                <p class="">Date:</p>
+                                <p class="">01-01-2022</p>
+                            </div>
+                            <hr>
+                            <hr>
+                            <hr>
+                            <hr>
+                            <div class="">
+                                <p class="">Mensualite:</p>
+                                <p class=""> <%= loan.monthlyRemittance %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Echeance:</p>
+                                <p class=""> <%= loan.term %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Mois Restants:</p>
+                                <p class=""> <%= loan.term - payments.length %> </p>
+                            </div>
+                            <div class="">
+                                <p class="">Balance total:</p>
+                                <p class=""> <%= loan.actualBalance %> </p>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <p class="fs-5 text-center mt-2">Etat de Compte</p>
+                <div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Montant</th>
+                                <th scope="col">Interet</th>
+                                <th scope="col">Capital</th>
+                                <th scope="col">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (payments.length != 0) { %>
+                                <% let newTotal = loan.finalAmount %>
+                                <% let count = 1 %>
+                                <% payments.forEach((payment) => { %>
+                                    <tr>
+                                        <td scope="row"> <%= count %> </td>
+                                        <td><%= payment.issuedDate.toISOString().split('T')[0]; %></td>
+                                        <td><%= payment.totalPayment %></td>
+                                        <% let interest = parseFloat((loan.totalInterest / loan.term).toFixed(2)) %>
+                                        <td><%= interest.toFixed(2) %></td>
+                                        <td><%= payment.totalPayment - interest %></td>
+                                        <% newTotal = (newTotal - payment.totalPayment).toFixed(2) %>
+                                        <td><%= newTotal %></td>
+                                    </tr>
+                                    <% count++ %>
+                                <% }) %>
+                            <% } %>
+                            
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="row"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>Balance</th>
+                                <th> <%= loan.actualBalance %> </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="col-12 row justify-content-between">
+                        <div class="col row mx-auto justify-content-between gap-2">
+                            <button class="btns col" data-bs-toggle="modal" data-bs-target="#payment-modal">Effectuer Paiement</button>
+                            <button class="btns col" data-bs-toggle="modal" data-bs-target="#loan-state-mdl">Imprimer Plan</button>
+                            <button class="btns col" >Imprimer Etat</button>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('includes/payment-modal'); -%> 
+    <%- include('includes/loan-state-modal'); -%> 
+
+
+
+<%- include('includes/footer'); -%> 
+<%- include('includes/form-script'); -%> 
+<%- include('includes/form-lookup'); -%>    

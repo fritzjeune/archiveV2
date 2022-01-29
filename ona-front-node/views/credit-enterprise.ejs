@@ -1,0 +1,72 @@
+<%- include('includes/header'); -%>
+    <%- include('includes/nav'); -%>
+
+    <div class="container serv-credit col-9 gap-3 px-0 py-2">
+        <%- include('includes/credit-side'); -%>
+        <div class="col-9 rounded-3 content p-2 gap-2">
+            <div class="content-head d-flex flex-row align-items-center justify-content-between px-3 py-2">
+                <div class="icn d-flex flex-row gap-3">
+                    <img class="" src="/icons/double-chevron-l.png" alt="" srcset="">
+                    <div>27</div>
+                    <img class="" src="/icons/double-chevron.png" alt="" srcset="">
+                </div>
+                <form class="p-0" action="">
+                    <input class="m-0 px-3 rounded-3" type="text" name="" id="lookup">
+                    <img src="/icons/search-lookup.png" alt="" srcset="">
+                </form>
+            </div>
+            <div class="container loaner-container" id="loaner-cont">
+                <% if (enterprises.length > 0) { %>
+                    <% enterprises.forEach((enterprise) => {  %>
+                        <div class="loan" id="loan">
+                            <div>
+                                <div class="">
+                                    <p class="">Nom:</p>
+                                    <p class=""  id="businessName"> <%= enterprise.businessName %> </p>
+                                </div>
+                                <div class="" >
+                                    <p class="">Categorie:</p>
+                                    <p class="" id="businessCategory"> <%= enterprise.businessCategory %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">NIF:</p>
+                                    <p class="" id="nif"> <%= enterprise.nif %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Matricule:</p>
+                                    <p class="" id="matricule-ona"> <%= enterprise.matriculeONA %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Id Comerce:</p>
+                                    <p class="" id="min-comerce-id"> <%= enterprise.minComerceId %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Date d'afiliation:</p>
+                                    <p class="" id="affiliation-date"> <%= enterprise.affiliationDate %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Tel:</p>
+                                    <p class="" id="phone"> <%= enterprise.phone %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Adress:</p>
+                                    <p class="" id="address"> <%= enterprise.socialAdress.street %> </p>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="visibility: hidden;">
+                                    <a href="/credit/" id="edit-link"><img src="/icons/printer2.png" alt=""></a>
+                                </div>
+                                <div>
+                                    <a href="/credit/enterprises/<%= enterprise._id %>" id="edit-link"><img src="/icons/write.png" alt=""></a>
+                                </div>
+                            </div>                    
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+            
+        </div>
+    </div>
+
+<%- include('includes/footer'); -%> 

@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "pwa-chrome",
+            "name": "http://localhost:3030/api/v1/assurees/5080000006",
+            "request": "launch",
+            "url": "http://localhost:3030/api/v1/assurees/5080000006"
+        }
+    ]
+}

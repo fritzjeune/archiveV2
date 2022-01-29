@@ -1,0 +1,53 @@
+<script>
+    assureeNif.addEventListener('focusout', async (event)=> {
+        let nif = assureeNif.value;
+
+        fetch(`/api/v1/assurees/${nif}`).then(response => response.json()).then(data => {
+            if (data.success) {
+                let assuree = data.data;
+                assureeSurname.value = assuree.surname;
+                assureeFirstname.value = assuree.firstname;
+                if (assuree.matriculeOnaArchive) {
+                    assureeMatricule.value = assuree.matriculeOnaArchive;
+                }
+                if (assuree.phone != []) {
+                    assureePhone.value = assuree.phone[0];
+                }
+                if (assuree.address) {
+                    assureeAddress.value = assuree.address.street;
+                }
+
+            }
+        })                
+    });
+    // 
+
+    entrepriseMenu.addEventListener('focusout', async (event)=> {
+        let nif = event.target.value;
+        let addr = event.target.options[event.target.selectedIndex].id;
+
+        console.log(addr.id)
+        entNif.value = nif;
+        entAddress.value = addr;
+    });
+
+    entrepriseMenu.addEventListener('focusin', async (event)=> {
+        entrepriseMenu.innerHTML = '';
+
+        fetch('/api/v1/enterprises/').then(response => response.json()).then(data => {
+            if (data.success) {
+                let enterprises = data.data;
+                enterprises.forEach(enterprise => {
+                    let option = document.createElement('option');
+                    // const att = document.createAttribute("addr");
+                    option.value = enterprise.matriculeONA;
+                    option.id = enterprise.matriculeONA;
+                    // option.setAttributeNode(att);
+                    option.innerText = enterprise.businessName;
+                    // console.log(option);
+                    entrepriseMenu.appendChild(option);
+                });
+            }
+        })                
+    })
+</script>

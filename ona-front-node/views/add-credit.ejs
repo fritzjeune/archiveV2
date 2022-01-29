@@ -1,0 +1,149 @@
+<%- include('includes/header'); -%>
+    <%- include('includes/nav'); -%>
+
+    <div class="container serv-credit col-9 gap-3 px-0 py-2">
+        <%- include('includes/credit-side'); -%>
+        <div class="col-9 rounded-3 content p-2 gap-2">
+            <div class="content-head d-flex flex-row align-items-center justify-content-between px-3 py-2">
+                <p class="section-title mt-3">Ajouter un nouveau Pret</p>
+            </div>
+            <div class="loaner-container">
+                <form class="" action="/api/v1/pret" method="post" id="loan-form">
+                    <div class="add-credit">
+                        <div class="form-mb">
+                            <label for="assuree-nif">NIF</label>
+                            <input type="text" name="assuree" id="assuree-nif" placeholder="001-000-000-0">
+                        </div>
+                        <div class="form-mb">
+                            <label for="surname">Nom</label>
+                            <input type="text" name="surname" id="surname" placeholder="Andre">
+                        </div>
+                        <div class="form-mb">
+                            <label for="firstname">Prenom</label>
+                            <input type="text" name="firstname" id="firstname" placeholder="Kenny">
+                        </div>
+                        <div class="form-mb">
+                            <label for="immatriculation">Matricule</label>
+                            <input type="text" name="immatriculation" id="immatriculation" placeholder="0000-000000-0000">
+                        </div>
+                        <div class="form-mb">
+                            <label for="phone">Tel</label>
+                            <input type="text" name="phone" id="phone" placeholder="+50935410000">
+                        </div>
+                        <div class="form-mb">
+                            <label for="address">Address</label>
+                            <input type="text" name="address" id="address" placeholder="Ruelle Jeune, Delmas 17">
+                        </div>
+                    </div>
+                    <div class="add-credit">
+                        <div class="form-mb">
+                            <label for="enterprise-menu">Entreprise</label>
+                            <select name="enterprise-name" id="enterprise-menu">
+                                <option id="enterprise-default" value="" selected="true" disabled>Choisir l'Entreprise</option>
+                            </select>
+                        </div>
+                        <div class="form-mb">
+                            <label for="nif-enterprise">Matricule Entreprise</label>
+                            <input type="text" name="enterprise" id="nif-entreprise" placeholder="000-000-000-0">
+                        </div>
+                        <div class="form-mb">
+                            <label for="ent-address">Address</label>
+                            <input type="text" name="ent-address" id="ent-address" placeholder="Rue N, Port-au-prince">
+                        </div>
+                    </div>
+                    <div class="add-credit">
+                        <div class="form-mb">
+                            <label for="loanApprouved">Montant Approuve</label>
+                            <input type="" name="loanApprouved" id="loanApprouved" placeholder="100000.00" step="0.01">
+                        </div>
+                        <div class="form-mb">
+                            <label for="term">Echeance</label>
+                            <select name="term" id="term">
+                                <option value="6" disabled>6</option>
+                                <option value="12">12</option>
+                                <option value="18">18</option>
+                                <option value="24">24</option>
+                                <option value="36">36</option>
+                                <option value="48">48</option>
+                            </select>
+                        </div>
+                        <div class="form-mb">
+                            <label for="totalInterest">Total Interet</label>
+                            <input type="number" name="totalInterest" id="totalInterest" placeholder="7000.00" step="0.01">
+                        </div>
+                        <div class="form-mb">
+                            <label for="finalAmount">Montant Total</label>
+                            <input type="number" name="finalAmount" id="finalAmount" placeholder="107000.00" step="0.01">
+                        </div>
+                        <div class="form-mb">
+                            <label for="deducedDebts">Balance Anterieur</label>
+                            <input type="number" name="deducedDebts" id="deducedDebts" placeholder="58500.00" step="0.01">
+                        </div>
+                        <div class="form-mb">
+                            <label for="stampDuty">Droit de Timbre</label>
+                            <input type="number" name="stampDuty" id="stampDuty" placeholder="100.00" step="0.01">
+                        </div>
+                        <div class="form-mb">
+                            <label for="CashReceived">Montant decaisse</label>
+                            <input type="number" name="CashReceived" id="CashReceived" placeholder="48400.00" step="0.01">
+                        </div>
+                        <div class="form-mb">
+                            <label for="monthlyRemittance">Mensualite</label>
+                            <input type="number" name="monthlyRemittance" id="monthlyRemittance" placeholder="5944.44" step="0.01">
+                        </div>
+                        <div class="form-mb">
+                            <label for="issued_date">Date d'approbation</label>
+                            <input type="date" name="issued_date" id="issued_date" placeholder="28-01-2022">
+                        </div>
+                    </div>
+                    <div class="submit-cont">
+                        <button type="submit" id="loan-submit">Creer Pret</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+<%- include('includes/footer'); -%>   
+<%- include('includes/form-script'); -%>   
+<script>
+    let loanForm = document.getElementById('loan-form');      
+    let totalInterest = document.getElementById('totalInterest');
+    let finalAmount = document.getElementById('finalAmount');
+    let deducedDebts = document.getElementById('deducedDebts');
+    let stampDuty = document.getElementById('stampDuty');
+    let CashReceived = document.getElementById('CashReceived');
+    let monthlyRemittance = document.getElementById('monthlyRemittance');
+    let term = document.getElementById('term');
+
+
+    term.addEventListener('focusout', (event) => {
+        let data = new FormData(loanForm).entries();
+        let formData = JSON.stringify(Object.fromEntries(data));
+        // const formData = Object.assign(...Array.from(data, ([name, value]) => ({[name]: value})));
+        // let lForm = new FormData(loanForm); 
+        console.log(formData)
+        fetch('/api/v1/pret?calculate=true', {
+            body: formData,
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json()).then(data => {
+            console.log(data.totalInterest)
+            if (data.success == true) {
+                totalInterest.value = data.data.totalInterest;
+                finalAmount.value = data.data.finalAmount;
+                deducedDebts.value = data.data.deducedDebts;
+                stampDuty.value = data.data.stampDuty;
+                CashReceived.value = data.data.CashReceived;
+                monthlyRemittance.value = data.data.monthlyRemittance;
+            }
+        }); 
+    })
+</script>
+<%- include('includes/form-lookup'); -%>  
+
+
+
