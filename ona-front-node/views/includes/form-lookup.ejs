@@ -2,9 +2,9 @@
     assureeNif.addEventListener('focusout', async (event)=> {
         let nif = assureeNif.value;
 
-        fetch(`/api/v1/assurees/${nif}`).then(response => response.json()).then(data => {
+        fetch(`/api/v1/assurees/?national_id=${nif}`).then(response => response.json()).then(data => {
             if (data.success) {
-                let assuree = data.data;
+                let assuree = data.data[0];
                 assureeSurname.value = assuree.surname;
                 assureeFirstname.value = assuree.firstname;
                 if (assuree.matriculeOnaArchive) {
@@ -14,7 +14,7 @@
                     assureePhone.value = assuree.phone[0];
                 }
                 if (assuree.address) {
-                    assureeAddress.value = assuree.address.street;
+                    assureeAddress.value = assuree.address;
                 }
 
             }

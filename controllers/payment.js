@@ -52,7 +52,7 @@ exports.makePayment = async(req, res, next) => {
             });
         }
 
-        let enterprise = await Enterprise.findOne({ nif: req.body.enterprise });
+        let enterprise = await Enterprise.findOne({ matriculeONA: req.body.enterprise });
         if (!assuree) {
             return res.status(404).json({
                 success: false,

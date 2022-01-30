@@ -9,10 +9,32 @@ const Pret = require('../models/Pret');
 exports.getAssurees = async(req, res, next) => {
     try {
         // console.log(req.query);
-        const assurees = await Assuree.find(req.query).populate({path: 'enterprise', select:'nif businessName businessCategory'}).
-        populate('works').
-        populate('loans').
-        populate('family');
+        const newQuery = Object.assign({}, req.query);
+
+        const { page = 1, limit = 10 } = req.query;
+        
+        delete newQuery.limit;
+        delete newQuery.page;
+        console.log(newQuery)
+        let query;
+        if (newQuery.national_id) {
+
+            query = { $or: [
+                { nif : newQuery.national_id },
+                { cin : newQuery.national_id },
+                { nin : newQuery.national_id }
+            ]
+            }
+        }
+        console.log(query)
+
+        const assurees = await Assuree.find(query)
+        .populate({path: 'enterprise', select:'nif matriculeONA businessName businessCategory'})
+        .populate('works')
+        .populate('loans')
+        .populate('family')
+        .limit(limit * 1)
+        .skip((page - 1) * limit);
 
         // console.log(assurees);
 
@@ -37,10 +59,11 @@ exports.getAssuree = async(req, res, next) => {
     // console.log(req.params);
 
     try {
-        const assuree = await Assuree.findOne(req.params).populate({path: 'enterprise', select:'nif businessName businessCategory'}).
-        populate('works').
-        populate('loans').
-        populate('family');
+        const assuree = await Assuree.findOne(req.params)
+        .populate({path: 'enterprise', select:'nif businessName businessCategory'})
+        .populate('works')
+        .populate('loans')
+        .populate('family');
 
         // console.log(assuree);
         if (!assuree) {

@@ -40,7 +40,7 @@ const calculateLoan = async (req, res) => {
     }
 
     // find the actual enterprise of the assuree/ loaner
-    let enterprise = await Enterprise.findOne({ nif: body.enterprise });
+    let enterprise = await Enterprise.findOne({ matriculeONA: body.enterprise });
     if (!enterprise) {
         return res.status(404).json({
             success: false,

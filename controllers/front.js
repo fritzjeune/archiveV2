@@ -28,7 +28,10 @@ exports.services = (req, res) => {
 
 exports.getCredit = async (req, res) => {
     const username = req.user.username;
+    const { page = 1, limit = 10 } = req.query;
     const prets = await Pret.find()
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
         .populate({path: 'enterprise', select:'nif businessName'})
         .populate({path: 'assuree', select: 'nif surname firstname phone'});
     res.render('credit-home.ejs', {loans : prets, user : username});
@@ -37,8 +40,8 @@ exports.getCredit = async (req, res) => {
 exports.getSingleCredit = async (req, res) => {
     const username = req.user.username;
     const pret = await Pret.findById(req.params.loanId)
-        .populate({path: 'enterprise', select:'nif businessName'})
-        .populate({path: 'assuree', select: 'nif surname firstname phone address email'}); 
+        .populate({path: 'enterprise', select:'nif businessName matriculeONA'})
+        .populate({path: 'assuree', select: 'nif surname firstname phone address email matriculeOnaArchive'}); 
         // TODO: verify if the loan exist in database before sending the data
     const payments = await Payment.find({ loanId : pret._id})
     res.render('single-credit.ejs', {loan : pret, user : username, payments : payments, moment: moment});
@@ -52,7 +55,10 @@ exports.getAddCredit = (req, res) => {
 exports.getEnterprises = async (req, res) => {
     const username = req.user.username;
 
-    const enterprises = await Enterprise.find();
+    const { page = 1, limit = 10 } = req.query;
+    const enterprises = await Enterprise.find()
+    .limit(limit * 1)
+    .skip((page - 1) * limit);
     res.render('credit-enterprise.ejs', {user : username, enterprises : enterprises})
 }
 
