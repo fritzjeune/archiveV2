@@ -2,13 +2,47 @@
 
 // const Assuree = require('../models/Assurees');
 const Enterprises = require('../models/Enterprises');
+const Pret = require('../models/Pret');
 
 // @descr       Get all ONA Registered enterprises
 // @route       GET /archives/api/v1/enterprises/
 // @access      Public
 exports.getEnterprises = async (req, res, next) => {
     try {
+
         const enterprises = await Enterprises.find().populate({path: 'assurees', select: "nif surname lastname sexe"});
+
+        // console.log(enterprises);
+    
+        res.status(200).json({
+            success: true,
+            message: "successfullly get all enterprises",
+            count: enterprises.length,
+            data: enterprises
+        });
+    } catch (err) { 
+        res.status(400).json({
+            success: false,
+            message: "Can't get any enterprise or you sent a bad request"
+        });
+    }
+};
+
+// @descr       Get all ONA Registered enterprises
+// @route       GET /archives/api/v1/enterprises/
+// @access      Public
+exports.getEnterprisesWithLoaner = async (req, res, next) => {
+    try {
+        const enterprises = await Enterprises
+        // .find().populate({path: 'assurees', select: "nif surname lastname sexe"});
+        .aggregate(
+            [
+                {$match: {}},
+                {$lookup: { from: Pret.collection.name, localField: '_id', foreignField: 'enterprise', as: 'loans' }},
+                {$match: { loans: { $exists: true, $ne: []}  }}
+                // {$match: { $and : [{ loans: { $exists: true, $ne: []}  }, { 'loans.loanState': {$ne: 'closed'}}] }}
+        ]
+        );
 
         // console.log(enterprises);
     
@@ -34,7 +68,7 @@ exports.getEnterprise = async (req, res, next) => {
     try {
 
         const id = req.params.enterpriseId;
-        const enterprise = await Enterprises.findOne({nif : id}).populate({path: 'assurees', select: "nif surname lastname sexe"});
+        const enterprise = await Enterprises.findOne({ $or : [{ nif : id}, { matriculeONA : id}] }).populate({path: 'assurees', select: "nif surname lastname sexe"});
 
         if (!enterprise) {
             return res.status(404).json({

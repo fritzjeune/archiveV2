@@ -1,4 +1,4 @@
-<div class="modal fade" id="payment-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="enterprise-payment-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -7,8 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="loaner-container">
-
-                <form class="" action="/api/v1/pret//payment" method="post" id="basic-info-form">
+                <form class="" action="/api/v1/enterprises/<%= enterprise._id%>/payment" method="post" id="basic-info-form">
                     <div class="add-credit">
                         <div class="form-mb">
                             <label for="payment-date">Date</label>
@@ -22,16 +21,16 @@
                             <label for="totalPayment">Montant du Paiement</label>
                             <input type="text" name="totalPayment" id="totalPayment" placeholder="100000.00">
                         </div>
-                        <div class="form-mb">
+                        <!-- <div class="form-mb">
                             <label for="payment-type">Type de Paiement</label>
                             <select name="paymentOwner" id="payment-type">
                                 <option value="">Choisir une Option</option>
                                 <option value="individual">Individuel</option>
                                 <option value="enterprise">Entreprise</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
-                    <div class="add-credit">
+                    <!-- <div class="add-credit">
                         <div class="form-mb">
                             <label for="enterprise-menu">Entreprise</label>
                             <select name="enterprise-name" id="enterprise-menu">
@@ -46,11 +45,11 @@
                             <label for="ent-address">Address Entreprise</label>
                             <input type="text" name="ent-address" id="ent-address" placeholder="X0000000">
                         </div>
-                    </div>
-                    <div class="add-credit">
+                    </div> -->
+                    <div class="add-credit" id="assuree-ref-cont">
                         <div class="form-mb">
-                            <label for="assuree-nif">NIF</label>
-                            <input type="text" name="assuree" id="assuree-nif" value="<%= loan.assuree.nif %>">
+                            <label for="assuree-nif">NIF/CIN</label>
+                            <input type="text" name="assuree" id="assuree-nif" value="">
                         </div>
                         <div class="form-mb">
                             <label for="surname">Nom</label>
@@ -75,7 +74,7 @@
                         </div>
                     </div>
                     <div class="submit-cont">
-                        <button type="submit" id="btn-basic-next">Ajouter Une autre Personne</button>
+                        <button type="submit" id="add-people">Ajouter Une autre Personne</button>
                         <button type="submit" id="btn-basic-next">Envoyer le Paiment</button>
                     </div>
                 </form>

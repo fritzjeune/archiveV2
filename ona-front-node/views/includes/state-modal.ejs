@@ -1,0 +1,151 @@
+
+
+<!-- Modal -->
+<div class="modal fade" id="state-mdl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"> <%= loan.surname %> <%= loan.firstname %> </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="loan single-credit">
+                        <% if (loan != null) { %>
+                            <div class="">
+                                <div class="">
+                                    <p class="">Nom:</p>
+                                    <p class=""> <%= loan.surname %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Prenom:</p>
+                                    <p class=""> <%= loan.firstname %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">NIF:</p>
+                                    <p class=""> <%= loan.assuree.nif %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">CIN:</p>
+                                    <p class=""> <%= loan.assuree.cin %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Matricule:</p>
+                                    <p class=""> <%= loan.assuree.matriculeOnaArchive %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Entreprise:</p>
+                                    <p class=""> <%= loan.enterprise.businessName %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Matricule Entreprise</p>
+                                    <p class=""> <%= loan.enterprise.matriculeONA %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Tel:</p>
+                                    <p class=""> <%= loan.assuree.phone[0] %> </p>
+                                </div>
+                                <hr>
+                                <hr>
+                                <hr>
+                                <hr>
+                                <div class="">
+                                    <p class="">Montant Approuve:</p>
+                                    <p class=""> <%= loan.loanApprouved %> </p> 
+                                </div>
+                                <div class="">
+                                    <p class="">Total Interet:</p>
+                                    <p class=""> <%= loan.totalInterest %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Total Du Pret:</p>
+                                    <p class=""> <%= loan.finalAmount %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Montant Decaisse:</p>
+                                    <p class=""> <%= loan.CashReceived %> </p>
+                                </div>                
+                                <!-- <div class="">
+                                    <p class="">Date:</p>
+                                    <p class="">01-01-2022</p>
+                                </div> -->
+                                <hr>
+                                <hr>
+                                <hr>
+                                <hr>
+                                <div class="">
+                                    <p class="">Mensualite:</p>
+                                    <p class=""> <%= loan.monthlyRemittance %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Echeance:</p>
+                                    <p class=""> <%= loan.term %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Mois Restants:</p>
+                                    <p class=""> <%= loan.term - payments.length %> </p>
+                                </div>
+                                <div class="">
+                                    <p class="">Balance total:</p>
+                                    <p class=""> <%= loan.actualBalance %> </p>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                    <table class="table table-striped">
+                        <!-- <thead> -->
+                            <tr>
+                                <th scope="col">Mois</th>
+                                <th scope="col">Date Versement</th>
+                                <th scope="col">Solde</th>
+                                <th scope="col">Mensualite</th>
+                                <th scope="col">Interet Mensuel</th>
+                                <th scope="col">Versement</th>
+                            </tr>
+                        <!-- </thead> -->
+                        <!-- <tbody> -->
+                            <% if (payments.length != 0) { %>
+                                <% let newTotal = loan.finalAmount %>
+                                <% let count = 1 %>
+                                <% payments.forEach((payment) => { %>
+                                    <tr>
+                                        <td scope="row"> <%= count %> </td>
+                                        <td><%= payment.issuedDate.toISOString().split('T')[0]; %></td>
+                                        <td><%= payment.totalPayment %></td>
+                                        <% let interest = parseFloat((loan.totalInterest / loan.term).toFixed(2)) %>
+                                        <td><%= interest.toFixed(2) %></td>
+                                        <td><%= payment.totalPayment - interest %></td>
+                                        <% newTotal = (newTotal - payment.totalPayment).toFixed(2) %>
+                                        <td><%= newTotal %></td>
+                                    </tr>
+                                    <% count++ %>
+                                <% }) %>
+                            <% } %>
+                            
+                        <!-- </tbody> -->
+                        <!-- <tfoot> -->
+                            <tr>
+                                <th scope="row"></th>
+                                <th></th>
+                                <th> Total Verse</th>
+                                <% let Versement = 0 %>
+                                <% payments.forEach((payment) => { %>
+                                    <% Versement += payment.totalPayment %>
+                                <% }) %>  
+                                <th> <%= Versement %> </th>
+                                <th> Balance </th>
+                                <th> <%= loan.actualBalance %> </th>
+                            </tr>
+                        <!-- </tfoot> -->
+                    </table>
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Print</button>
+            </div>
+        </div>
+    </div>
+</div>

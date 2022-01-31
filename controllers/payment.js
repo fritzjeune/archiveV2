@@ -84,3 +84,32 @@ exports.makePayment = async(req, res, next) => {
         });
     }
 };
+
+
+// @descr       Create a payment voucher by enterprise
+// @route       GET /archives/api/v1/pret/:loanId/payment
+// @route       GET /archives/api/v1/enterprises/:enterpriseId/payment
+// @access      Private / Admin only
+exports.makePaymentByEnterprise = async(req, res, next) => {
+    try {
+        console.log(req.body);
+        let loans = req.body.loans;
+        console.log(req.params.enterpriseId)
+
+        let enterprise = await Enterprise.aggregate(
+            [
+                {$match: { _id : mongoose.types.ObjectId(req.params.enterpriseId) }},
+                // {$lookup: { from: Pret.collection.name, localField: '_id', foreignField: 'enterprise', as: 'loans' }}
+        ]
+        )
+
+
+
+        res.status(200).json({
+            success: true,
+            data: enterprise
+        })
+    } catch (err) {
+        
+    }
+}

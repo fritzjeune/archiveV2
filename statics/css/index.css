@@ -189,7 +189,7 @@ svg.icn:hover > path:nth-child(2) {
 
 } 
 
-.loan > div:first-child > div > p {
+.loan > div:first-child > div > p, .loan > div > p {
     margin: 0;
     line-height: 1.2em;
     font-size: 0.8em;
@@ -306,7 +306,7 @@ button[type="submit"]:hover, .btns:hover {
 }
 
 table {
-    font-size: 0.9em;
+    font-size: 0.8em;
 }
 
 /* Chrome, Safari, Edge, Opera */

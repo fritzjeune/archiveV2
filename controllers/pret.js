@@ -13,7 +13,7 @@ const calculateLoan = async (req, res) => {
     var body = req.body;
 
     // find the assuree who make the loan/loaner
-    let assuree = await Assuree.findOne({ nif: body.assuree });
+    let assuree = await Assuree.findOne({$or: [{nif: body.assuree}, {cin: body.assuree}, {nin: body.assuree}] });
     // TODO find assuree by cin or other id number
     if (!assuree) {
         return res.status(404).json({
@@ -23,18 +23,21 @@ const calculateLoan = async (req, res) => {
     } else {
         // adding the relationship between loan and assuree
         body.assuree = assuree._id;
-
+        let idPart = "";
+        if (assuree.nif == "") {
+            idPart = assuree.matriculeOnaArchive.split('-').join('');
+        }
         if (!body.issued_date) {
             let year = today.getFullYear();
             let month = today.getMonth() + 1;
             if (month < 10) {
                 month = `0${month}`;
             }
-            body.loanId = `${year}${month}${assuree.nif}`;
+            body.loanId = `${year}${month}${idPart}`;
         } else {
             // Adding an unique id number for each loan
             let code = body.issued_date.split('-').join('').slice(0, 6);
-            body.loanId = `${code}${assuree.nif}`
+            body.loanId = `${code}${idPart}`
         }         
         // console.log(req.body.loanId);
     }

@@ -29,7 +29,7 @@ exports.services = (req, res) => {
 exports.getCredit = async (req, res) => {
     const username = req.user.username;
     const { page = 1, limit = 10 } = req.query;
-    const prets = await Pret.find()
+    const prets = await Pret.find({ loanState: {$ne: 'closed'} })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .populate({path: 'enterprise', select:'nif businessName'})
@@ -56,7 +56,14 @@ exports.getEnterprises = async (req, res) => {
     const username = req.user.username;
 
     const { page = 1, limit = 10 } = req.query;
-    const enterprises = await Enterprise.find()
+    const enterprises = await Enterprise.aggregate(
+        [
+            {$match: {}},
+            {$lookup: { from: Pret.collection.name, localField: '_id', foreignField: 'enterprise', as: 'loans' }},
+            {$match: { loans: { $exists: true, $ne: []}  }}
+            // {$match: { $and : [{ loans: { $exists: true, $ne: []}  }, { 'loans.loanState': {$ne: 'closed'}}] }}
+    ]
+    )
     .limit(limit * 1)
     .skip((page - 1) * limit);
     res.render('credit-enterprise.ejs', {user : username, enterprises : enterprises})

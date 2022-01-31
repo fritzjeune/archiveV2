@@ -50,7 +50,7 @@
                             <hr>
                             <div class="">
                                 <p class="">Tel:</p>
-                                <p class=""> <%= loan.assuree.phone %> </p>
+                                <p class=""> <%= loan.assuree.phone[0] %> </p>
                             </div>
                             <div class="">
                                 <p class="">Tel Entreprise</p>
@@ -171,7 +171,7 @@
                         <div class="col row mx-auto justify-content-between gap-2">
                             <button class="btns col" data-bs-toggle="modal" data-bs-target="#payment-modal">Effectuer Paiement</button>
                             <button class="btns col" data-bs-toggle="modal" data-bs-target="#loan-state-mdl">Imprimer Plan</button>
-                            <button class="btns col" >Imprimer Etat</button>
+                            <button class="btns col" data-bs-toggle="modal" data-bs-target="#state-mdl">Imprimer Etat</button>
                         </div>     
                     </div>
                 </div>
@@ -180,6 +180,7 @@
     </div>
     <%- include('includes/payment-modal'); -%> 
     <%- include('includes/loan-state-modal'); -%> 
+    <%- include('includes/state-modal'); -%> 
 
 
 
