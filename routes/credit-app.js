@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require('../middlewares/auth');
 
-const { home, services, getCredit, getSingleCredit, getAddCredit, lookupItem, postCredit, getEnterprises, getSingleEnterprise} = require("../controllers/front");
+const { home, services, getAllCredit, getSingleCredit, getAddCredit, lookupItem, postCredit, getEnterprises, getSingleEnterprise, getCreditByDate } = require("../controllers/front");
 
 router.route('/')
     .get(home);
@@ -10,8 +10,12 @@ router.route('/')
 router.route('/services')
     .get(auth, services);
 
-router.route('/credit')
-    .get(auth, getCredit)
+router.route('/credit/date')
+    .get(auth, getCreditByDate)
+    .post(auth, postCredit);
+
+router.route('/credit/recovery')
+    .get(auth, getAllCredit)
     .post(auth, postCredit);
 
 router.route('/credit/add')

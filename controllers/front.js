@@ -26,7 +26,13 @@ exports.services = (req, res) => {
     res.render('home.ejs', { user : username });
 }
 
-exports.getCredit = async (req, res) => {
+exports.getCreditByDate = async (req, res) => {
+    const username = req.user.username;
+    
+    res.render('credit-by-date.ejs', { user : username, moment: moment});
+}
+
+exports.getAllCredit = async (req, res) => {
     const username = req.user.username;
     const { page = 1, limit = 10 } = req.query;
     const prets = await Pret.find({ loanState: {$ne: 'closed'} })

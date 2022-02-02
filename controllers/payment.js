@@ -45,26 +45,26 @@ exports.makePayment = async(req, res, next) => {
             });
         }
 
-        if (!req.body.enterprise) {
-            return res.status(403).json({
-                success: false,
-                message: `Please Add the Enterprise nif in the request body`
-            });
-        }
+        // if (!req.body.enterprise) {
+        //     return res.status(403).json({
+        //         success: false,
+        //         message: `Please Add the Enterprise nif in the request body`
+        //     });
+        // }
 
-        let enterprise = await Enterprise.findOne({ matriculeONA: req.body.enterprise });
-        if (!assuree) {
-            return res.status(404).json({
-                success: false,
-                message: `Assuree with nif ${req.body.enterprise} not found`
-            });
-        }
+        // let enterprise = await Enterprise.findOne({ matriculeONA: req.body.enterprise });
+        // if (!assuree) {
+        //     return res.status(404).json({
+        //         success: false,
+        //         message: `Assuree with nif ${req.body.enterprise} not found`
+        //     });
+        // }
 
         req.body.loanId = loan._id;
         req.body.assuree = assuree._id;
-        req.body.enterprise = enterprise._id;
+        // req.body.enterprise = enterprise._id;
         req.body.surname = assuree.surname;
-        req.body.lastname = assuree.lastname;
+        req.body.firstname = assuree.firstname;
 
         // console.log(req.body);
 
@@ -130,16 +130,8 @@ exports.makePaymentByEnterprise = async(req, res, next) => {
             });
         }
 
-        const sucessPayment = await Payment.insertMany(payments)
-        .then(function (docs) {
-            return docs;
-        })
-        .catch(function (err) {
-            return res.status(500).json({
-                success: false,
-                msg: err
-            });
-        });
+        const sucessPayment = await Payment.insertMany(payments);
+        
 
         let enterprise = await Enterprise.findById(req.params.enterpriseId);
 

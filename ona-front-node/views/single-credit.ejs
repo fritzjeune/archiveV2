@@ -144,10 +144,10 @@
                                     <tr>
                                         <td scope="row"> <%= count %> </td>
                                         <td><%= payment.issuedDate.toISOString().split('T')[0]; %></td>
-                                        <td><%= payment.totalPayment %></td>
+                                        <td><%= payment.totalPayment.toFixed(2) %></td>
                                         <% let interest = parseFloat((loan.totalInterest / loan.term).toFixed(2)) %>
                                         <td><%= interest.toFixed(2) %></td>
-                                        <td><%= payment.totalPayment - interest %></td>
+                                        <td><%= (payment.totalPayment - interest).toFixed(2) %></td>
                                         <% newTotal = (newTotal - payment.totalPayment).toFixed(2) %>
                                         <td><%= newTotal %></td>
                                     </tr>

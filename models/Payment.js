@@ -72,11 +72,12 @@ const PaymentSchema = new mongoose.Schema({
 
 
 PaymentSchema.post("save", async (doc, next) => {
+    console.log('hello from create one');
     paymentId = doc.loanId;
-    console.log(paymentId)
+    // console.log(paymentId)
     let loan = await Pret.findOne({ _id: paymentId });
-    console.log('payment step')
-    console.log(loan);
+    // console.log('payment step')
+    // console.log(loan);
     loan.payments.push(doc);
     loan.actualBalance = parseFloat((loan.actualBalance - doc.totalPayment).toFixed(2));
     if (loan.actualBalance <= 0) {
@@ -85,6 +86,26 @@ PaymentSchema.post("save", async (doc, next) => {
     loan.save(function(err) {
         if (err) throw err;
     });
+});
+
+PaymentSchema.post("insertMany", async (docs, next) => {
+    console.log('hello from insert many');
+    
+    // console.log(docs)
+    docs.forEach(async (payment) => {
+        let loan = await Pret.findOne({ _id: payment.loanId });
+        // console.log('payment step')
+        // console.log(loan);
+        loan.payments.push(payment.id);
+        loan.actualBalance = parseFloat((loan.actualBalance - payment.totalPayment).toFixed(2));
+        if (loan.actualBalance <= 0) {
+            loan.loanState = "closed";
+        }
+        loan.save(function(err) {
+            if (err) throw err;
+        });
+    });
+    
 });
 
 module.exports = mongoose.models.Payment || mongoose.model('Payment', PaymentSchema);
