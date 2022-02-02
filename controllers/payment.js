@@ -94,20 +94,65 @@ exports.makePaymentByEnterprise = async(req, res, next) => {
     try {
         console.log(req.body);
         let loans = req.body.loans;
-        console.log(req.params.enterpriseId)
+        console.log(loans)
 
-        let enterprise = await Enterprise.aggregate(
-            [
-                {$match: { _id : mongoose.types.ObjectId(req.params.enterpriseId) }},
-                // {$lookup: { from: Pret.collection.name, localField: '_id', foreignField: 'enterprise', as: 'loans' }}
-        ]
-        )
+        const loanActives = await Pret.find({ enterprise: req.params.enterpriseId, loanState: {$ne: 'closed'} })
+            .populate({path: 'enterprise', select:'nif businessName matriculeONA'})
+            .populate({path: 'assuree', select: 'nif surname firstname'})
+            .populate({path: 'payments', select: 'issuedDate totalPayment paymentOwner'});
 
+        let payments = [];
+        let total = 0;
 
+        loanActives.forEach((loan) => {
+            // let verifiedLoan = await Pret.findOne({ loanId: loan.id, enterprise: req.params.enterpriseId, loanState: {$ne: 'closed'} });
+            // console.log(verifiedLoan);
+            
+            let payment = {};
+            payment.receiptNumber = req.body.receiptNumber;
+            payment.loanId = loan._id;
+            payment.surname = loan.surname;
+            payment.firstname = loan.firstname;
+            payment.issuedDate = req.body.issuedDate;
+            payment.totalPayment = loan.monthlyRemittance;
+            payment.paymentOwner = "enterprise";
+            payment.assuree = loan.assuree._id;
+            
+            payments = payments.concat(payment);
+            total += payment.totalPayment
+        });
+
+        console.log(total)
+        if (total > req.body.totalPayment) {
+            return res.status(403).json({
+                success: false,
+                msg: 'Unsufficient payment'
+            });
+        }
+
+        const sucessPayment = await Payment.insertMany(payments)
+        .then(function (docs) {
+            return docs;
+        })
+        .catch(function (err) {
+            return res.status(500).json({
+                success: false,
+                msg: err
+            });
+        });
+
+        let enterprise = await Enterprise.findById(req.params.enterpriseId);
+
+        if (req.body.totalPayment > total) {
+            console.log(enterprise.balance)    
+            enterprise.balance = enterprise.balance + req.body.totalPayment - total;
+            console.log(enterprise.balance) 
+            await enterprise.save();
+        }
 
         res.status(200).json({
             success: true,
-            data: enterprise
+            data: sucessPayment
         })
     } catch (err) {
         

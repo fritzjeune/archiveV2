@@ -49,16 +49,17 @@ const PaymentSchema = new mongoose.Schema({
         enum: ['individual', 'enterprise'],
         default: "individual"
     },
-    implicatedMembers:
-        [
-            {
-                type: mongoose.Schema.ObjectId,
-                ref: 'Assuree',
-                required: false
-            }
-        ],
+    // referencedLoans:
+    //     [
+    //         {
+    //             type: mongoose.Schema.ObjectId,
+    //             ref: 'Pret',
+    //             required: false
+    //         }
+    //     ],
     registeredDate: {
         type: Date,
+        default: Date.now
     },
     description: String
 

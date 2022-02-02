@@ -28,7 +28,17 @@ const EnterpriseSchema = new mongoose.Schema({
         country: String,
         street: String,
     },
-    affiliationDate: Date
+    affiliationDate: Date,
+    balance: Number,
+    payments: {
+        receiptNumber: String,
+        issuedDate: Date,
+        totalAmount: Number,
+        references: [{
+            type: mongoose.Schema.ObjectId,
+            ref: 'Pret'
+        }]
+    }
 
 }, {
     toJSON: { virtuals: true },

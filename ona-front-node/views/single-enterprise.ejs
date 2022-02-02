@@ -50,43 +50,7 @@
                 </div>
                 <p class="fs-5 text-center mt-2">Prets Actifs</p>
                 <div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nom</th>
-                                <th scope="col">Prenom</th>
-                                <th scope="col">NIF</th>
-                                <th scope="col">Montant Pret</th>
-                                <th scope="col">Mensualite</th>
-                                <th scope="col">Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ent-loaner-list">
-                            <% assurees.forEach((loan, i) => { %>
-                                <tr id="<%= loan._id %>">
-                                    <td scope="row"> <%= i + 1 %> </td>
-                                    <td> <%= loan.surname %> </td>
-                                    <td> <%= loan.firstname %> </td>
-                                    <td> <%= loan.assuree.nif %> </td>
-                                    <td> <%= loan.finalAmount %> </td>
-                                    <td> <%= loan.monthlyRemittance %> </td>
-                                    <td> <%= loan.actualBalance %> </td>
-                                </tr>
-                            <% }); %> 
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th scope="row"></th>
-                                <th></th>
-                                <th></th>
-                                <th>Total Mensuel:</th>
-                                <th></th>
-                                <th>Total:</th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <%- include('includes/loaner-list'); -%> 
                     <div class="col-12 row justify-content-between">
                         <div class="col row mx-auto justify-content-between gap-3">
                             <button class="btns col-5" data-bs-toggle="modal" data-bs-target="#enterprise-payment-modal">Effectuer Paiement</button>
@@ -102,26 +66,4 @@
 
 <%- include('includes/footer'); -%> 
 <%- include('includes/form-script'); -%> 
-<%- include('includes/form-lookup'); -%>
-<script>
-    let loanerlist = document.getElementById('ent-loaner-list');
-    let assureeEl = document.getElementById('assuree-ref-cont');
-    let form = document.getElementById('basic-info-form');
-    let addPeople = document.getElementById('add-people');
-    let loaners = loanerlist.querySelectorAll('tr');
-
-
-    console.log(loaners)
-    loaners.forEach(loaner => {
-        console.log(loaner.getAttribute('id'))
-        loaner.addEventListener('click', (evt) => {
-            console.log(evt.target.closest('tr'))
-            window.location.href = `../${evt.target.closest('tr').getAttribute('id')}`
-        })
-    });
-
-    addPeople.addEventListener('click', () => {
-        let newAssuree = assureeEl.cloneNode(true);
-    })
-
-</script>  
+<%- include('includes/form-lookup'); -%>    

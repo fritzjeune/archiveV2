@@ -1,0 +1,42 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prenom</th>
+            <th scope="col">NIF</th>
+            <th scope="col">Montant Pret</th>
+            <th scope="col">Mensualite</th>
+            <th scope="col">Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% let monthlyTotal = 0%>
+        <% let balanceTotal = 0%>
+        <% assurees.forEach((loan, i) => { %>
+            <tr>
+                <td scope="row"> <%= i + 1 %> </td>
+                <td> <%= loan.surname %> </td>
+                <td> <%= loan.firstname %> </td>
+                <td> <%= loan.assuree.nif %> </td>
+                <td> <%= loan.finalAmount %> </td>
+                <td> <%= loan.monthlyRemittance %> </td>
+                <td> <%= loan.actualBalance %> </td>
+            </tr>
+            <% monthlyTotal += loan.monthlyRemittance %>
+            <% balanceTotal += loan.actualBalance %>
+        <% }); %> 
+    </tbody>
+    <tfoot>
+        <tr>
+            <th scope="row"></th>
+            <th></th>
+            <th></th>
+            <th>Total Mensuel:</th>
+
+            <th><%= monthlyTotal %></th>
+            <th>Total Balance:</th>
+            <th><%= balanceTotal %></th>
+        </tr>
+    </tfoot>
+</table>
