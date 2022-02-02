@@ -103,7 +103,7 @@
     console.log(moment().date() + 1)
 
     window.onload = ()=> {
-        let query = todayDay.add(position, 'D').date();
+        let query = todayDay.date();
         console.log(query);
         todayBox.innerText = query;
         getLoanByDate(query, 0); 
@@ -111,14 +111,14 @@
 
     leftArrow.onclick = () => {
         position -= 1;
-        let query = todayDay.add(position, 'D').date();
+        let query = todayDay.date() + position;
         todayBox.innerText = query;
         getLoanByDate(query, 0); 
     }
 
     rightArrow.onclick = () => {
         position += 1;
-        let query = todayDay.add(position, 'D').date();
+        let query = todayDay.date() + position;
         todayBox.innerText = query;
         getLoanByDate(query, 0); 
     }

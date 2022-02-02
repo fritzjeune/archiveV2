@@ -175,7 +175,7 @@ exports.createPret = async(req, res, next) => {
         }
 
         // console.log(pret);
-        res.redirect('/credit');
+        res.redirect('/credit/recovery');
         // res.status(200).json({
         //     success: true,
         //     message: "Loan Successfully archived",

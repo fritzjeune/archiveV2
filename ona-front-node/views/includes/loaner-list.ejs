@@ -10,11 +10,11 @@
             <th scope="col">Balance</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="ent-loaner-list">
         <% let monthlyTotal = 0%>
         <% let balanceTotal = 0%>
         <% assurees.forEach((loan, i) => { %>
-            <tr>
+            <tr id="<%= loan._id %>">
                 <td scope="row"> <%= i + 1 %> </td>
                 <td> <%= loan.surname %> </td>
                 <td> <%= loan.firstname %> </td>

@@ -66,4 +66,26 @@
 
 <%- include('includes/footer'); -%> 
 <%- include('includes/form-script'); -%> 
-<%- include('includes/form-lookup'); -%>    
+<%- include('includes/form-lookup'); -%> 
+<script>
+    let loanerlist = document.getElementById('ent-loaner-list');
+    let assureeEl = document.getElementById('assuree-ref-cont');
+    let form = document.getElementById('basic-info-form');
+    let addPeople = document.getElementById('add-people');
+    let loaners = loanerlist.querySelectorAll('tr');
+
+
+    console.log(loaners)
+    loaners.forEach(loaner => {
+        console.log(loaner.getAttribute('id'))
+        loaner.addEventListener('click', (evt) => {
+            console.log(evt.target.closest('tr'))
+            window.location.href = `../${evt.target.closest('tr').getAttribute('id')}`
+        })
+    });
+
+    addPeople.addEventListener('click', () => {
+        let newAssuree = assureeEl.cloneNode(true);
+    })
+
+</script>    
