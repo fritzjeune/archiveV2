@@ -86,8 +86,8 @@
                     let newLoanEl = loanItem.cloneNode(true);
                     newLoanEl.querySelector('#surname').innerText = loan.surname;
                     newLoanEl.querySelector('#firstname').innerText = loan.firstname;
-                    newLoanEl.querySelector('#phone').innerText = loan.assuree.phone;
-                    newLoanEl.querySelector('#enterprise').innerText = loan.enterprise.businessName;
+                    newLoanEl.querySelector('#phone').innerText = loan.assuree[0].phone;
+                    newLoanEl.querySelector('#enterprise').innerText = loan.enterprise[0].businessName;
                     newLoanEl.querySelector('#e-date').innerText = loan.issued_date.split("T")[0];
                     newLoanEl.querySelector('#monthly').innerText = loan.monthlyRemittance;
                     newLoanEl.querySelector('#actual-balance').innerText = loan.actualBalance;
