@@ -1,6 +1,6 @@
 // jshint esversion:9
 const User = require('../models/Users');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // @descr       create a new user 
 // @route       POST /archives/api/v1/assurees/:id/family

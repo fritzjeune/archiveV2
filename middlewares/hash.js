@@ -1,6 +1,6 @@
 // jshint esversion:9
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 bcrypt.genSalt(10, (err, salt) => {
     console.log(salt);

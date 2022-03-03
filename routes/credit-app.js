@@ -2,13 +2,16 @@ const express = require("express");
 const router = express.Router();
 const auth = require('../middlewares/auth');
 
-const { home, services, getAllCredit, getSingleCredit, getAddCredit, lookupItem, postCredit, getEnterprises, getSingleEnterprise, getCreditByDate } = require("../controllers/front");
+const { home, services, getAllCredit, getSingleCredit, getAddCredit, lookupItem, postCredit, getEnterprises, getSingleEnterprise, getCreditByDate } = require("../controllers/credit-front");
+const { identificationHome } = require('../controllers/identification-front');
 
 router.route('/')
     .get(home);
 
 router.route('/services')
     .get(auth, services);
+
+// credit app
 
 router.route('/credit/date')
     .get(auth, getCreditByDate)
@@ -36,15 +39,15 @@ router.route('/credit/enterprises/:enterpriseId')
 // router.route('/credit/:creditId/payments')
 //     .get(getReports);
 
+// end credit routes
+
+// start identification routes
+
+router.route('/identification')
+    .get(auth, identificationHome);
 
 
-
-
-// router.route('/credit')
-//     .get(auth, getCredit);
-
-// router.route('/credit')
-//     .get(auth, getCredit);
+// end identification routes
 
 
 module.exports = router;

@@ -1,0 +1,5 @@
+.dockerignore
+node_modules
+.env
+.gitignore
+ona-front-node/node_modules

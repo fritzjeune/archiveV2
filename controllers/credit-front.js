@@ -29,7 +29,7 @@ exports.services = (req, res) => {
 exports.getCreditByDate = async (req, res) => {
     const username = req.user.username;
     
-    res.render('credit-by-date.ejs', { user : username, moment: moment});
+    res.render('credit/credit-by-date.ejs', { user : username, moment: moment});
 }
 
 exports.getAllCredit = async (req, res) => {
@@ -40,7 +40,7 @@ exports.getAllCredit = async (req, res) => {
         .skip((page - 1) * limit)
         .populate({path: 'enterprise', select:'nif businessName'})
         .populate({path: 'assuree', select: 'nif surname firstname phone'});
-    res.render('credit-home.ejs', {loans : prets, user : username});
+    res.render('credit/credit-home.ejs', {loans : prets, user : username});
 }
 
 exports.getSingleCredit = async (req, res) => {
@@ -50,12 +50,12 @@ exports.getSingleCredit = async (req, res) => {
         .populate({path: 'assuree', select: 'nif surname firstname phone address email matriculeOnaArchive'}); 
         // TODO: verify if the loan exist in database before sending the data
     const payments = await Payment.find({ loanId : pret._id})
-    res.render('single-credit.ejs', {loan : pret, user : username, payments : payments, moment: moment});
+    res.render('credit/single-credit.ejs', {loan : pret, user : username, payments : payments, moment: moment});
 }
 
 exports.getAddCredit = (req, res) => {
     const username = req.user.username;
-    res.render('add-credit.ejs', {user : username})
+    res.render('credit/add-credit.ejs', {user : username})
 }
 
 exports.getEnterprises = async (req, res) => {
@@ -72,7 +72,7 @@ exports.getEnterprises = async (req, res) => {
     )
     .limit(limit * 1)
     .skip((page - 1) * limit);
-    res.render('credit-enterprise.ejs', {user : username, enterprises : enterprises})
+    res.render('credit/credit-enterprise.ejs', {user : username, enterprises : enterprises})
 }
 
 exports.getSingleEnterprise = async (req, res) => {
@@ -83,7 +83,7 @@ exports.getSingleEnterprise = async (req, res) => {
     .populate({path: 'enterprise', select:'nif businessName'})
     .populate({path: 'assuree', select: 'nif surname firstname phone'})
     .populate({path: 'payments', select: 'issuedDate totalPayment paymentOwner'});
-    res.render('single-enterprise.ejs', {user : username, enterprise : enterprise, assurees : assureeWL})
+    res.render('credit/single-enterprise.ejs', {user : username, enterprise : enterprise, assurees : assureeWL})
 }
 
 exports.postCredit = (req, res) => {
@@ -94,7 +94,7 @@ exports.postCredit = (req, res) => {
 exports.lookupItem = (req, res) => {
     // console.log(req);
     const username = req.user.username;
-    res.render('check-credit.ejs', {user : username});
+    res.render('credit/check-credit.ejs', {user : username});
 }
 
 
