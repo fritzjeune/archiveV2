@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require('../middlewares/auth');
 
 const { home, services, getAllCredit, getSingleCredit, getAddCredit, lookupItem, postCredit, getEnterprises, getSingleEnterprise, getCreditByDate } = require("../controllers/credit-front");
-const { identificationHome } = require('../controllers/identification-front');
+const { identificationHome, addAssuree, getAssurees, getEnterprisesIdent } = require('../controllers/identification-front');
 
 router.route('/')
     .get(home);
@@ -27,7 +27,7 @@ router.route('/credit/add')
 router.route('/credit/find')
     .get(auth, lookupItem);
 
-router.route('/credit/enterprises/')
+router.route('/credit/enterprises')
     .get(auth, getEnterprises);
 
 router.route('/credit/:loanId')
@@ -45,6 +45,15 @@ router.route('/credit/enterprises/:enterpriseId')
 
 router.route('/identification')
     .get(auth, identificationHome);
+
+router.route('/identification/new-assuree')
+    .get(auth, addAssuree);
+
+router.route('/identification/assurees')
+    .get(auth, getAssurees);
+
+router.route('/identification/enterprises')
+    .get(auth, getEnterprisesIdent);
 
 
 // end identification routes

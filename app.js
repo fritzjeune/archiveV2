@@ -19,7 +19,7 @@ const auth = require('./routes/auth');
 const credit = require('./routes/credit-app')
 const cookieParser = require('cookie-parser');
 
-const app = express();
+const app = express({ strict: true });
 // { strict: true }
 
 
