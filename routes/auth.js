@@ -8,7 +8,7 @@ const {
         userLogin, userLogout } = require('../controllers/auth.js');
 
 router
-    .route('/')
+    .route('/signup')
     .post(createUser);
 
 router

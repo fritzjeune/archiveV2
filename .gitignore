@@ -1,3 +1,4 @@
 node_modules
 .env
 imports
+.DS_Store

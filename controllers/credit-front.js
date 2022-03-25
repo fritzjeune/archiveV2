@@ -13,9 +13,9 @@ const Pret = require('../models/Pret');
 // @route       GET /archives/api/v1/enterprises/:enterpriseId/payment
 // @access      Private / Admin only
 exports.home = (req, res, next) => {
-    if (req.query.msg) {
-        res.render('index.ejs', msg=req.query.msg);
-    }
+    // if (req.query.msg) {
+    //     res.render('index.ejs', msg=req.query.msg);
+    // }
     
     res.render('index.ejs');
 };

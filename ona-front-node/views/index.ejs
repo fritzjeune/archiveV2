@@ -55,43 +55,43 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form autocomplete="off" method="post" action="/api/v1/auth">
+                <form id="signup-form" autocomplete="off">
                     <input autocomplete="false" name="hidden" type="text" style="display:none;">
                     <div class="row justify-content-between px-3">
                         <div class="mb-3 col-6">
                             <label for="email" class="form-label">Email:</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" name="email">
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
                         </div>
                         <div class="mb-3 col-6">
                             <label for="reg-username" class="form-label">Username:</label>
-                            <input type="text" class="form-control" id="reg-username"  name="username" autocomplete="off">
+                            <input type="text" class="form-control" id="reg-username"  name="username" autocomplete="off" required>
                         </div>
                     </div>
                     
                     <div class="row justify-content-between px-3">
                         <div class="mb-3 col-6">
                             <label for="reg-password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="reg-password" name="password" autocomplete="off">
+                            <input type="password" class="form-control" id="reg-password" name="password" autocomplete="off" required>
                         </div>
                         <div class="mb-3 col-6">
                             <label for="conf-password" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="conf-password">
+                            <input type="password" class="form-control" id="conf-password" name="confpassword" required>
                         </div>
                     </div>
                     <div class="row justify-content-between px-3">
                         <div class="mb-3 col-6">
                             <label for="firstname" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstname" name="firstname">
+                            <input type="text" class="form-control" id="firstname" name="firstname" required>
                         </div>
                         <div class="mb-3 col-6">
                             <label for="lastname" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastname" name="lastname">
+                            <input type="text" class="form-control" id="lastname" name="lastname" required>
                         </div>
                     </div>
                     <div class="row justify-content-between px-3">
                         <div class="mb-3 col-6">
                             <label for="service" class="form-label">Service</label>
-                            <select name="service" id="service" class="form-control">
+                            <select name="service" id="service" class="form-control" required>
                                 <option value="" selected="true" disabled>Choisir votre service</option>
                                 <option value="credit">Credit</option>
                                 <option value="adm-credit">Adm. Credit</option>
@@ -102,7 +102,7 @@
                         </div>
                         <div class="mb-3 col-6">
                             <label for="fonction" class="form-label">Fonction</label>
-                            <select name="fonction" id="fonction" class="form-control">
+                            <select name="fonction" id="fonction" class="form-control" required>
                                 <option value="" selected="true" disabled>Choisir votre fonction</option>
                                 <option value="agent">Agent</option>
                                 <option value="ass-chef-service">Ass. Chef de Service</option>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Register</button>
+                        <button id="rgt-submit" type="submit" class="btn btn-primary">Register</button>
                     </div>
                 </form>
             </div>
@@ -125,32 +125,51 @@
     <%- include('includes/footer'); -%>   
 
     <script>
-        // let logBtn = document.querySelector("#log-submit")
+        let rgtBtn = document.querySelector("#rgt-submit")
+        let signupForm = document.getElementById("signup-form");
         // // console.log(loginForm);
         
 
-        // async function sendRequest (url, data, method) {
-        //     let response = await fetch(url, {
-        //         method: method,
-        //         data : data
-        //     });
-        //     console.log(response)
-        // }
+        async function signup (uri, data, method) {
+            let response = await fetch(uri, {
+                method: method,
+                body : data,
+                redirect: 'error',
+                headers: {
+                'Content-Type': 'application/json'
+            }
+            }).then(response => response.json()).then(doc => {
+                // window.location.href = data.redirect;
+                // console.log('doc')
+            });
+        }
 
 
+        signupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
 
-        
-
-        // logBtn.addEventListener('click', (event)=> {
-        //     event.preventDefault();
-        //     alert("hello")
-        //     let loginForm = document.getElementById("login-form");
-        //     let formData = new FormData(loginForm);
-        //     console.log(formData);
-        //     sendRequest('/api/v1/auth/login', formData, "POST");
-        //     console.log(formData);
             
-        // })
+            let data = new FormData(signupForm).entries();
+            let signupFormData = JSON.stringify(Object.fromEntries(data));
+            // signupForm.reset();  // Reset all form data
+            // signup('/api/v1/auth/signup/', signupFormData, 'POST');
+
+            fetch('/api/v1/auth/signup/', {
+            body: signupFormData,
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+                }
+            }).then(response => response.json()).then(data => {
+                console.log(data.success)
+                if (data.success == false) {
+                    alert(data.message)
+                } else {
+                    window.location.href = "/services";
+                }
+            }); 
+            
+        })
     </script>
 </body>
 
