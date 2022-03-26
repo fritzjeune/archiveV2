@@ -9,9 +9,11 @@ dotenv.config();
 
 
 const localUri = process.env.MONGODB_URI;
+const webUri = process.env.MONGODB_URI_ATLAS;
+
 
 const connectDB = async () => {
-    const conn = await mongoose.connect(localUri); 
+    const conn = await mongoose.connect(webUri); 
 
     console.log(`mongoDB ConnecteD: ${conn.connection.host}`);
 

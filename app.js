@@ -4,7 +4,8 @@ const express = require('express' );
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
-dotenv.config({ path: '.config/config.env' });
+//load env files 
+dotenv.config();
 
 connectDB();
 

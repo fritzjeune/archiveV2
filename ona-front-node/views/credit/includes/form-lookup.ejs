@@ -24,7 +24,7 @@
 
     entrepriseMenu.addEventListener('focusout', async (event)=> {
         let nif = event.target.value;
-        let addr = event.target.options[event.target.selectedIndex].id;
+        let addr = event.target.options[event.target.selectedIndex].dataset.addr;
 
         console.log(addr.id)
         entNif.value = nif;
@@ -43,6 +43,7 @@
                     option.value = enterprise.matriculeONA;
                     option.id = enterprise.matriculeONA;
                     // option.setAttributeNode(att);
+                    option.dataset.addr = enterprise.socialAdress.street;
                     option.innerText = enterprise.businessName;
                     // console.log(option);
                     entrepriseMenu.appendChild(option);

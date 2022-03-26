@@ -11,10 +11,11 @@ const ANNUAL_INTEREST = 6;
 
 const calculateLoan = async (req, res) => {
     var body = req.body;
-
+    console.log(req.body)
     // find the assuree who make the loan/loaner
     let assuree = await Assuree.findOne({$or: [{nif: body.assuree}, {cin: body.assuree}, {nin: body.assuree}] });
     // TODO find assuree by cin or other id number
+    console.log(assuree)
     if (!assuree) {
         return res.status(404).json({
             success: false,
@@ -26,6 +27,8 @@ const calculateLoan = async (req, res) => {
         let idPart = "";
         if (assuree.nif == "") {
             idPart = assuree.matriculeOnaArchive.split('-').join('');
+        } else {
+            idPart = assuree.nif.split('-').join('');
         }
         if (!body.issued_date) {
             let year = today.getFullYear();
@@ -124,6 +127,7 @@ const calculateLoan = async (req, res) => {
     // the final amount of the giving loan
     body.CashReceived = parseFloat((loanApprouved - (parseFloat(req.body.stampDuty) + parseFloat(req.body.deducedDebts))).toFixed(2));
 
+    console.log(body)
     return body;
 }
 
