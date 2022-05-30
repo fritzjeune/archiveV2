@@ -13,7 +13,7 @@ const webUri = process.env.MONGODB_URI_ATLAS;
 
 
 const connectDB = async () => {
-    const conn = await mongoose.connect(webUri); 
+    const conn = await mongoose.connect(localUri); 
 
     console.log(`mongoDB ConnecteD: ${conn.connection.host}`);
 

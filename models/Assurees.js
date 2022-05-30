@@ -48,6 +48,10 @@ const AssureeSchema = new mongoose.Schema({
         unique: false,
         trim: true
     },
+    middleName: {
+        type: String,
+        trim: true
+    },
     firstname: {
         type: String,
         required: [true, 'S il vous plait, veuillez ajouter le prenom'],
