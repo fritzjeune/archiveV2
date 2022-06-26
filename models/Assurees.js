@@ -15,6 +15,7 @@ const AssureeSchema = new mongoose.Schema({
     finalCode: String,
     nif: {
         type: String,
+        unique: true,
         required: [false, 'S il vous plait, veuillez ajouter votre NIF'],
         // unique: true,
         // maxlength: [10, 'le numero d identification doit avoir 10 chiffres.'],
@@ -82,7 +83,7 @@ const AssureeSchema = new mongoose.Schema({
     },
     matrimonialProperty: {
         type: String,
-        // enum: ['communauté', 'séparation']
+        // enum: ['communaute', 'separation']
     },
     //contact part
     address: {
@@ -167,6 +168,8 @@ AssureeSchema.virtual('family', {
     justOne: false
 });
 
+// Create a virtual to populate all the assuree loan 
+
 AssureeSchema.virtual('loans', {
     ref: 'Pret', // The model to use
     localField: '_id', // Find people where `localField`
@@ -176,6 +179,6 @@ AssureeSchema.virtual('loans', {
     justOne: false
 });
 
-// TODO: Create a virtual to populate all the assuree loan
+
 
 module.exports = mongoose.models.Assuree || mongoose.model('Assuree', AssureeSchema);

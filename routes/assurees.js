@@ -30,7 +30,7 @@ router
     .route('/:nif')
     .get(getAssuree)
     .put(updateAssuree)
-    .delete(auth, deleteAssuree);
+    .delete(deleteAssuree);   // Add auth middleware in the future
 
 router
     .route('/:nif/works')

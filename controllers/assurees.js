@@ -2,6 +2,8 @@
 const Assuree = require('../models/Assurees');
 const Enterprise = require('../models/Enterprises');
 const Pret = require('../models/Pret');
+const QRCode = require('qrcode');
+const { json } = require('express/lib/response');
 
 // @descr       Get all ona Assurees
 // @route       GET /archives/api/v1/assurees
@@ -26,7 +28,7 @@ exports.getAssurees = async(req, res, next) => {
             ]
             }
         }
-        console.log(query)
+        // console.log(query)
 
         const assurees = await Assuree.find(query)
         .populate({path: 'enterprise', select:'nif matriculeONA businessName businessCategory'})
@@ -91,11 +93,36 @@ exports.getAssuree = async(req, res, next) => {
 // @access      Private
 exports.createAssuree = async(req, res, next) => {
     try {
+
+        // With async/await
+
+        var opts = {
+            errorCorrectionLevel: 'H',
+            type: 'image/jpeg',
+            quality: 0.3,
+            margin: 1,
+            color: {
+              dark:"#010599FF",
+              light:"#FFBF60FF"
+            }
+        }
+
+        console.log(req.body)
+
+        let code = QRCode.toString(JSON.stringify(req.body), {type: 'image/png', }, function (err, url) {
+            // console.log(url)
+        })
+
+        console.log(code)
+
         const assuree = await Assuree.create(req.body);
+        
+        
         res.status(201).json({
             message: "Assuree created sucessfully",
             success: true,
-            data: assuree
+            data: assuree,
+            code: code
         });
     } catch (error) {
         // console.log(error);
